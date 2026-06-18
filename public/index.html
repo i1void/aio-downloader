@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="All-in-one social media downloader. TikTok, Instagram, Facebook — free, no login.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1void Tools | Social Media Downloader</title>
+    <link rel="icon" type="image/png" href="icon/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .landing-hero { text-align: center; margin-bottom: 2rem; }
+        .landing-hero h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 0.4rem; }
+        .landing-hero p { font-size: 0.9rem; color: var(--text-secondary); }
+        .landing-card.tiktok:hover  { --accent: #ffffff; }
+        .landing-card.facebook:hover { --accent: #1877f2; }
+        .landing-card.instagram:hover { --accent: #e1306c; }
+        .landing-card.tiktok .landing-card-icon  { color: #ffffff; }
+        .landing-card.facebook .landing-card-icon { color: #1877f2; }
+        .landing-card.instagram .landing-card-icon { color: #e1306c; }
+    </style>
+</head>
+<body>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <span class="side-menu-title">Menu</span>
+            <button class="close-btn" id="closeMenu"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="side-menu-body">
+            <div class="menu-section">
+                <p class="menu-section-label">Tools</p>
+                <a href="/tiktok" class="menu-item">
+                    <i class='bx bxl-tiktok'></i><span>TikTok Downloader</span>
+                    <i class='bx bx-chevron-right menu-external'></i>
+                </a>
+                <a href="/fesnuk" class="menu-item">
+                    <i class='bx bxl-facebook'></i><span>Fesnuk Downloader</span>
+                    <i class='bx bx-chevron-right menu-external'></i>
+                </a>
+                <a href="/instagram" class="menu-item">
+                    <i class='bx bxl-instagram'></i><span>Instagram Downloader</span>
+                    <i class='bx bx-chevron-right menu-external'></i>
+                </a>
+            </div>
+            <div class="menu-section">
+                <p class="menu-section-label">About</p>
+                <div class="about-card">
+                    <div class="about-logo"><i class='bx bx-cloud-download'></i><span>1void Tools</span></div>
+                    <p class="about-desc">All-in-one social media downloader. Free, fast, no login required.</p>
+                    <div class="about-divider"></div>
+                    <p class="about-footer">Built with ❤️ by <a href="https://github.com/i1void" target="_blank"><strong>1void</strong></a></p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="topbar">
+        <button class="burger-btn" id="burgerBtn"><span></span><span></span><span></span></button>
+        <a href="/" class="topbar-brand"><i class='bx bx-cloud-download'></i><span>1void<b>Tools</b></span></a>
+        <div class="topbar-actions">
+            <button class="theme-toggle" id="themeToggle"><i class='bx bx-moon' id="themeIcon"></i></button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="landing-hero">
+            <h1>Social Media <b style="color:var(--accent)">Downloader</b></h1>
+            <p>Pick a platform to get started</p>
+        </div>
+        <div class="landing-grid">
+            <a href="/tiktok" class="landing-card tiktok">
+                <i class='bx bxl-tiktok landing-card-icon'></i>
+                <div class="landing-card-info">
+                    <h3>TikTok Downloader</h3>
+                    <p>HD videos & audio, no watermark</p>
+                </div>
+                <i class='bx bx-chevron-right landing-card-arrow'></i>
+            </a>
+            <a href="/fesnuk" class="landing-card facebook">
+                <i class='bx bxl-facebook landing-card-icon'></i>
+                <div class="landing-card-info">
+                    <h3>Fesnuk Downloader</h3>
+                    <p>Facebook videos & reels in HD</p>
+                </div>
+                <i class='bx bx-chevron-right landing-card-arrow'></i>
+            </a>
+            <a href="/instagram" class="landing-card instagram">
+                <i class='bx bxl-instagram landing-card-icon'></i>
+                <div class="landing-card-info">
+                    <h3>Instagram Downloader</h3>
+                    <p>Reels, videos & photo carousels</p>
+                </div>
+                <i class='bx bx-chevron-right landing-card-arrow'></i>
+            </a>
+        </div>
+    </main>
+
+    <footer>
+        <a class="btn-script" href="https://github.com/i1void" target="_blank">
+            <h3>Created by <b>1void</b></h3>
+            <p>aio.herta.web.id</p>
+        </a>
+    </footer>
+
+    <script>
+        // Minimal theme + menu for landing page
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon   = document.getElementById('themeIcon');
+        function setTheme(m) {
+            document.body.classList.toggle('light', m === 'light');
+            themeIcon.className = m === 'light' ? 'bx bx-sun' : 'bx bx-moon';
+            localStorage.setItem('theme', m);
+        }
+        setTheme(localStorage.getItem('theme') || 'dark');
+        themeToggle.addEventListener('click', () => setTheme(document.body.classList.contains('light') ? 'dark' : 'light'));
+
+        const burgerBtn = document.getElementById('burgerBtn');
+        const sideMenu  = document.getElementById('sideMenu');
+        const overlay   = document.getElementById('menuOverlay');
+        const closeBtn  = document.getElementById('closeMenu');
+        const open  = () => { sideMenu.classList.add('open'); overlay.classList.add('active'); document.body.style.overflow='hidden'; };
+        const close = () => { sideMenu.classList.remove('open'); overlay.classList.remove('active'); document.body.style.overflow=''; };
+        burgerBtn.addEventListener('click', open);
+        closeBtn.addEventListener('click', close);
+        overlay.addEventListener('click', close);
+        document.addEventListener('keydown', e => { if(e.key==='Escape') close(); });
+    </script>
+</body>
+</html>

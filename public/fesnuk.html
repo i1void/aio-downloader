@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Download Facebook videos without watermark. Free and Easy!">
+    <meta name="keywords" content="facebook downloader, facebook video download, fb video download">
+    <meta name="author" content="1void">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FesnukDL | Download Facebook Videos HD</title>
+    <link rel="icon" type="image/png" href="icon/icon.png">
+    <link rel="stylesheet" href="style.css">
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="page-facebook">
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <nav class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <span class="side-menu-title">Menu</span>
+            <button class="close-btn" id="closeMenu"><i class='bx bx-x'></i></button>
+        </div>
+        <div class="side-menu-body">
+            <div class="menu-section">
+                <p class="menu-section-label">Tools</p>
+                <a href="/tiktok" class="menu-item">
+                    <i class='bx bxl-tiktok'></i><span>TikTok Downloader</span>
+                    <i class='bx bx-chevron-right menu-external'></i>
+                </a>
+                <a href="/fesnuk" class="menu-item active">
+                    <i class='bx bxl-facebook'></i><span>Fesnuk Downloader</span>
+                    <span class="menu-badge">You're here</span>
+                </a>
+                <a href="/instagram" class="menu-item">
+                    <i class='bx bxl-instagram'></i><span>Instagram Downloader</span>
+                    <i class='bx bx-chevron-right menu-external'></i>
+                </a>
+            </div>
+            <div class="menu-section">
+                <p class="menu-section-label">About</p>
+                <div class="about-card">
+                    <div class="about-logo"><i class='bx bxl-facebook'></i><span>FesnukDL</span></div>
+                    <p class="about-desc">Download Facebook videos in HD — fast, free, no login required.</p>
+                    <div class="about-version"><span>Version</span><span class="version-badge">v1.0.0</span></div>
+                    <div class="about-divider"></div>
+                    <p class="about-footer">Built with ❤️ by <a href="https://github.com/i1void" target="_blank"><strong>1void</strong></a></p>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="topbar">
+        <button class="burger-btn" id="burgerBtn"><span></span><span></span><span></span></button>
+        <a href="/" class="topbar-brand"><i class='bx bxl-facebook'></i><span>Fesnuk<b>DL</b></span></a>
+        <div class="topbar-actions">
+            <button class="theme-toggle" id="themeToggle"><i class='bx bx-moon' id="themeIcon"></i></button>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="card">
+            <div class="card-eyebrow"><i class='bx bxl-facebook'></i> Facebook Downloader</div>
+            <h2>Paste a <b>Facebook</b> link to download</h2>
+            <p class="card-sub">Videos & Reels — HD quality, no login required</p>
+            <form id="form">
+                <div class="input-wrap">
+                    <input type="url" id="url" placeholder="https://www.facebook.com/watch?v=...">
+                    <button type="button" id="pasteBtn" class="btn-paste" title="Tempel"><i class='bx bx-clipboard'></i></button>
+                </div>
+                <input type="submit" id="submit" class="btn-submit" value="DOWNLOAD">
+            </form>
+            <div id="content" class="content">
+                <ol>
+                    <li>Copy a link from <b>Facebook</b></li>
+                    <li>Paste it in the box above</li>
+                    <li>Click <b>DOWNLOAD</b></li>
+                    <li>Save your video in HD ✓</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <a class="btn-script" href="https://github.com/i1void" target="_blank">
+            <h3>Created by <b>1void</b></h3>
+            <p>FesnukDL v1.0.0</p>
+        </a>
+    </footer>
+
+    <script src="shared.js"></script>
+    <script>
+        const form      = document.getElementById('form');
+        const urlInput  = document.getElementById('url');
+        const submitBtn = document.getElementById('submit');
+        const content   = document.getElementById('content');
+        const pasteBtn  = document.getElementById('pasteBtn');
+
+        pasteBtn.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                urlInput.value = text;
+                if (text && isValid(text)) setTimeout(() => form.dispatchEvent(new Event('submit')), 300);
+            } catch { urlInput.focus(); }
+        });
+
+        const INSTRUCTIONS = `<ol>
+            <li>Copy a link from <b>Facebook</b></li>
+            <li>Paste it in the box above</li>
+            <li>Click <b>DOWNLOAD</b></li>
+            <li>Save your video in HD ✓</li>
+        </ol>`;
+
+        const PATTERNS = [
+            /facebook\.com\/.*\/videos\/\d+/,
+            /facebook\.com\/video\.php/,
+            /facebook\.com\/watch/,
+            /facebook\.com\/reel\/\d+/,
+            /facebook\.com\/share\/v\//,
+            /facebook\.com\/share\/r\//,
+            /fb\.watch\/[\w\d]+/,
+            /m\.facebook\.com\/.*\/videos\/\d+/,
+        ];
+        const isValid = url => PATTERNS.some(p => p.test(url));
+
+        function formatDuration(s) { if (!s) return null; return `${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`; }
+
+        function buildVideoResult(data) {
+            const id  = Math.floor(Math.random() * 1e9);
+            const dur = formatDuration(data.duration);
+            const info = `<div class="video-info">
+                <h3>${data.title || 'Facebook Video'}</h3>
+                ${data.uploader ? `<p><i class='bx bx-user'></i> ${data.uploader}</p>` : ''}
+                ${dur ? `<p><i class='bx bx-time'></i> ${dur}</p>` : ''}
+            </div>`;
+            const notice = `<div class="notice-bar"><i class='bx bx-info-circle'></i>Facebook downloader supports video only — no image posts</div>`;
+            const player = data.videoUrl
+                ? `<div class="video-container aspect-16-9"><video controls preload="metadata"${data.thumbnail?` poster="${data.thumbnail}"`:''}>
+                    <source src="${data.videoUrl}" type="video/mp4"></video></div>`
+                : data.thumbnail ? `<div class="thumbnail-container"><img src="${data.thumbnail}" alt="Thumbnail"></div>` : '';
+            const btns = [];
+            if (data.videoUrl) btns.push(createDownloadButton(data.videoUrl, `FesnukDL_HD_${id}.mp4`, 'bx-download', ' Download HD', 'btn-hd'));
+            if (data.videoUrlSD && data.videoUrlSD !== data.videoUrl) btns.push(createDownloadButton(data.videoUrlSD, `FesnukDL_SD_${id}.mp4`, 'bx-download', ' Download SD'));
+            return `<div class="result-wrap">${info}${notice}${player}<div class="download-section"><div class="download-options">${btns.join('')}</div><p class="download-hint"><i class='bx bx-info-circle'></i> Tap to download directly</p></div></div>`;
+        }
+
+        function buildImageResult(data) {
+            const images  = data.images;
+            const id      = Math.floor(Math.random() * 1e9);
+            const total   = images.length;
+            const slideId = `slide-${Math.random().toString(36).substr(2, 9)}`;
+            const slides  = images.map((url, i) => `<div class="slide-item ${i===0?'active':''}" data-index="${i}"><img src="${url}" alt="Photo ${i+1}" loading="${i===0?'eager':'lazy'}"></div>`).join('');
+            const dlBtns  = images.map((url, i) => createDownloadButton(url, `FesnukDL_${id}_${i+1}.jpg`, 'bx-image-download', ` Photo ${i+1}`)).join('');
+
+            setTimeout(() => {
+                const el = document.getElementById(slideId);
+                if (!el || total <= 1) return;
+                let cur = 0;
+                const items   = el.querySelectorAll('.slide-item');
+                const counter = el.querySelector('.slide-current');
+                const prev    = el.querySelector('.slide-prev');
+                const next    = el.querySelector('.slide-next');
+                function goTo(idx) { items[cur].classList.remove('active'); cur = (idx+total)%total; items[cur].classList.add('active'); if (counter) counter.textContent = cur+1; }
+                prev.addEventListener('click', () => goTo(cur-1));
+                next.addEventListener('click', () => goTo(cur+1));
+                let sx = 0;
+                el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+                el.addEventListener('touchend',   e => { const d = sx - e.changedTouches[0].clientX; if (Math.abs(d)>40) goTo(d>0?cur+1:cur-1); });
+            }, 100);
+
+            return `<div class="result-wrap">
+                <div class="video-info">
+                    <h3>${data.title || 'Facebook Photos'}</h3>
+                    <p><i class='bx bx-images'></i> ${total} photo${total>1?'s':''}</p>
+                </div>
+                <div class="slideshow" id="${slideId}">
+                    <div class="slide-track">${slides}</div>
+                    ${total>1?`<button class="slide-btn slide-prev"><i class='bx bx-chevron-left'></i></button><button class="slide-btn slide-next"><i class='bx bx-chevron-right'></i></button><div class="slide-counter"><span class="slide-current">1</span> / ${total}</div>`:''}
+                </div>
+                <div class="download-section">
+                    <div class="download-options download-grid">${dlBtns}</div>
+                    <p class="download-hint"><i class='bx bx-info-circle'></i> Tap each to download</p>
+                </div>
+            </div>`;
+        }
+
+        async function run(url) {
+            showLoading(content); submitBtn.disabled = true;
+            try {
+                const res    = await fetch(`/api/facebook?url=${encodeURIComponent(url)}`);
+                const result = JSON.parse(await res.text());
+                if (result.success && result.data) {
+                    const d = result.data;
+                    content.innerHTML = (d.type === 'image' && d.images?.length) ? buildImageResult(d) : buildVideoResult(d);
+                } else {
+                    showError(content, result.message || 'Unable to fetch video.', INSTRUCTIONS);
+                }
+            } catch (e) {
+                showError(content, e.message || 'Failed to process.', INSTRUCTIONS);
+            } finally { submitBtn.disabled = false; }
+        }
+
+        form.addEventListener('submit', e => { e.preventDefault(); const u = urlInput.value.trim(); if (!u) return showError(content, 'Please enter a Facebook URL', INSTRUCTIONS); if (!isValid(u)) return showError(content, 'Please enter a valid Facebook video URL', INSTRUCTIONS); run(u); });
+        urlInput.addEventListener('focus', () => { if (content.querySelector('.messageError')) content.innerHTML = INSTRUCTIONS; });
+        urlInput.addEventListener('paste', () => { setTimeout(() => { const u = urlInput.value.trim(); if (u && isValid(u)) setTimeout(() => form.dispatchEvent(new Event('submit')), 500); }, 100); });
+    </script>
+</body>
+</html>
