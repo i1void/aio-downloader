@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/tiktok.js": { "runtime": "@vercel/node@3.1.5" },
+    "api/facebook.js": { "runtime": "@vercel/node@3.1.5" },
+    "api/instagram.js": { "runtime": "@vercel/node@3.1.5" }
+  },
+  "rewrites": [
+    { "source": "/tiktok", "destination": "/public/tiktok.html" },
+    { "source": "/fesnuk", "destination": "/public/fesnuk.html" },
+    { "source": "/instagram", "destination": "/public/instagram.html" },
+    { "source": "/", "destination": "/public/index.html" }
+  ]
+}
