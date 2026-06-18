@@ -5,9 +5,10 @@
     "api/instagram.js": { "runtime": "@vercel/node@3.1.5" }
   },
   "rewrites": [
-    { "source": "/tiktok", "destination": "/public/tiktok.html" },
-    { "source": "/fesnuk", "destination": "/public/fesnuk.html" },
-    { "source": "/instagram", "destination": "/public/instagram.html" },
-    { "source": "/", "destination": "/public/index.html" }
+    { "source": "/tiktok", "destination": "/tiktok.html" },
+    { "source": "/fesnuk", "destination": "/fesnuk.html" },
+    { "source": "/instagram", "destination": "/instagram.html" },
+    { "source": "/", "destination": "/index.html" }
   ]
 }
+
