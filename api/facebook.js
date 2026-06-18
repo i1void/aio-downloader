@@ -1,14 +1,15 @@
 const axios = require('axios');
 
-function isValidTikTokUrl(url) {
+function isValidFacebookUrl(url) {
     const patterns = [
-        /^https?:\/\/(www\.)?(tiktok\.com|vm\.tiktok\.com|m\.tiktok\.com|vt\.tiktok\.com)/,
-        /tiktok\.com\/@[\w\.-]+\/video\/\d+/,
-        /tiktok\.com\/t\/[\w\d]+/,
-        /vm\.tiktok\.com\/[\w\d]+/,
-        /vt\.tiktok\.com\/[\w\d]+/,
-        /m\.tiktok\.com\/v\/\d+/,
-        /tiktok\.com\/.*\/video\/\d+/
+        /facebook\.com\/.*\/videos\/\d+/,
+        /facebook\.com\/video\.php/,
+        /facebook\.com\/watch/,
+        /facebook\.com\/reel\/\d+/,
+        /facebook\.com\/share\/v\//,
+        /facebook\.com\/share\/r\//,
+        /fb\.watch\/[\w\d]+/,
+        /m\.facebook\.com\/.*\/videos\/\d+/,
     ];
     return patterns.some(p => p.test(url));
 }
@@ -24,9 +25,9 @@ async function handler(req, res) {
     try {
         const { url } = req.query;
         if (!url) return res.status(400).json({ success: false, message: 'URL parameter is required' });
-        if (!isValidTikTokUrl(url)) return res.status(400).json({ success: false, message: 'Invalid TikTok URL' });
+        if (!isValidFacebookUrl(url)) return res.status(400).json({ success: false, message: 'Invalid Facebook URL' });
 
-        const response = await axios.get(`https://api.ivoid.cfd/downloader/tiktok?url=${encodeURIComponent(url)}`, {
+        const response = await axios.get(`https://api.ivoid.cfd/downloader/facebook?url=${encodeURIComponent(url)}`, {
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
                 'Accept': 'application/json'
@@ -40,26 +41,21 @@ async function handler(req, res) {
 
         const data  = response.data.result;
         const media = data.media || {};
-        const type  = data.type || 'video';
-
         return res.status(200).json({
             success: true,
             data: {
-                title:      data.title || 'TikTok Video',
-                type,
-                author:     data.music?.author || null,
-                // video
-                videoUrl:   media.video_hd || media.video || null,
-                videoUrlSD: media.video    || null,
-                // image slideshow
+                title:      data.title || 'Facebook Video',
+                type:       data.type || 'video',
+                thumbnail:  data.thumbnail || null,
+                duration:   data.duration || null,
+                uploader:   data.uploader || null,
+                videoUrl:   media.video    || null,
+                videoUrlSD: media.video_sd || null,
                 images:     media.images   || null,
-                // audio
-                audioUrl:   data.music?.url   || null,
-                musicTitle: data.music?.title || null,
             }
         });
     } catch (error) {
-        console.error('TikTok API Error:', error.message);
+        console.error('Facebook API Error:', error.message);
         if (error.code === 'ECONNABORTED') return res.status(408).json({ success: false, message: 'Request timeout. Please try again.' });
         return res.status(500).json({ success: false, message: 'Failed to process video. Please try again later.' });
     }
